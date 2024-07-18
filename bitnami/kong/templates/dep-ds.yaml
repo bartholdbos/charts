@@ -187,6 +187,12 @@ spec:
             - name: https-admin
               containerPort: {{ .Values.kong.containerPorts.adminHttps }}
               protocol: TCP
+            - name: http-manager
+              containerPort: {{ .Values.kong.containerPorts.managerHttp }}
+              protocol: TCP
+            - name: https-manager
+              containerPort: {{ .Values.kong.containerPorts.managerHttps }}
+              protocol: TCP
             {{- if .Values.metrics.enabled }}
             - name: http-metrics
               containerPort: {{ .Values.metrics.containerPorts.http }}

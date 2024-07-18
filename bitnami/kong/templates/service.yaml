@@ -77,6 +77,28 @@ spec:
       nodePort: null
       {{- end }}
     {{- end }}
+    {{- if .Values.service.exposeManager }}
+    {{- if not .Values.service.disableHttpPort }}
+    - port: {{ coalesce .Values.service.ports.managerHttp .Values.service.managerHttpPort }}
+      targetPort: http-manager
+      protocol: TCP
+      name: http-manager
+      {{- if and (or (eq .Values.service.type "NodePort") (eq .Values.service.type "LoadBalancer")) (not (empty (coalesce .Values.service.nodePorts.managerHttp .Values.service.managerHttpNodePort))) }}
+      nodePort: {{ coalesce .Values.service.nodePorts.managerHttp .Values.service.managerHttpNodePort }}
+      {{- else if eq .Values.service.type "ClusterIP" }}
+      nodePort: null
+      {{- end }}
+    {{- end }}
+    - port: {{ coalesce .Values.service.ports.managerHttps .Values.service.managerHttpsPort }}
+      targetPort: https-manager
+      protocol: TCP
+      name: https-manager
+      {{- if and (or (eq .Values.service.type "NodePort") (eq .Values.service.type "LoadBalancer")) (not (empty (coalesce .Values.service.nodePorts.managerHttps .Values.service.managerHttpsNodePort))) }}
+      nodePort: {{ coalesce .Values.service.nodePorts.managerHttps .Values.service.managerHttpsNodePort }}
+      {{- else if eq .Values.service.type "ClusterIP" }}
+      nodePort: null
+      {{- end }}
+    {{- end }}
     {{- if .Values.service.extraPorts }}
     {{- include "common.tplvalues.render" (dict "value" .Values.service.extraPorts "context" $) | nindent 4 }}
     {{- end }}

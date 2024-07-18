@@ -333,12 +333,16 @@ kong:
   ## @param kong.containerPorts.proxyHttps Kong proxy HTTPS container port
   ## @param kong.containerPorts.adminHttp Kong admin HTTP container port
   ## @param kong.containerPorts.adminHttps Kong admin HTTPS container port
+  ## @param kong.containerPorts.managerHttp Kong manager HTTP container port
+  ## @param kong.containerPorts.managerHttps Kong manager HTTPS container port
   ##
   containerPorts:
     proxyHttp: 8000
     proxyHttps: 8443
     adminHttp: 8001
     adminHttps: 8444
+    managerHttp: 8002
+    managerHttps: 8445
   ## Container resource requests and limits
   ## ref: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
   ## @param kong.resourcesPreset Set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if kong.resources is set (kong.resources is recommended for production).
@@ -425,6 +429,10 @@ service:
   ## @param service.exposeAdmin Add the Kong Admin ports to the service
   ##
   exposeAdmin: false
+  ## @param service.exposemanager Add the Kong manager ports to the service
+  ##
+  exposeManager: false
+  
   ## @param service.disableHttpPort Disable Kong proxy HTTP and Kong admin HTTP ports
   ##
   disableHttpPort: false
@@ -432,16 +440,22 @@ service:
   ## @param service.ports.proxyHttps Kong proxy service HTTPS port
   ## @param service.ports.adminHttp Kong admin service HTTP port (only if service.exposeAdmin=true)
   ## @param service.ports.adminHttps Kong admin service HTTPS port (only if service.exposeAdmin=true)
+  ## @param service.ports.managerHttps Kong manager service HTTPS port (only if service.exposeManager=true)
+  ## @param service.ports.managerHttps Kong manager service HTTPS port (only if service.exposeManager=true)
   ##
   ports:
     proxyHttp: 80
     proxyHttps: 443
     adminHttp: 8001
     adminHttps: 8444
+    managerHttp: 8002
+    managerHttps: 8445
   ## @param service.nodePorts.proxyHttp NodePort for the Kong proxy HTTP endpoint
   ## @param service.nodePorts.proxyHttps NodePort for the Kong proxy HTTPS endpoint
   ## @param service.nodePorts.adminHttp NodePort for the Kong admin HTTP endpoint
   ## @param service.nodePorts.adminHttps NodePort for the Kong admin HTTPS endpoint
+  ## @param service.nodePorts.managerHttp NodePort for the Kong manager HTTP endpoint
+  ## @param service.nodePorts.managerHttps NodePort for the Kong manager HTTPS endpoint
   ## NOTE: choose port between <30000-32767>
   ##
   nodePorts:
@@ -449,6 +463,8 @@ service:
     proxyHttps: ""
     adminHttp: ""
     adminHttps: ""
+    managerHttp: ""
+    managerHttps: ""
   ## @param service.sessionAffinity Control where client requests go, to the same pod or round-robin
   ## Values: ClientIP or None
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/
